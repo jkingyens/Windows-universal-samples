@@ -119,5 +119,10 @@ namespace MasterDetailApp
                 DetailContentPresenter.ContentTransitions.Clear();
             }
         }
+
+        private void TextBlock_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

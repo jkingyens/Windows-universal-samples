@@ -96,7 +96,7 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock
-            Text="My Items"
+            Text="Pages"
             Margin="12,8,8,8"
             Style="{ThemeResource TitleTextBlockStyle}" />
 

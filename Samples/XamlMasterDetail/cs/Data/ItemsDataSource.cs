@@ -1,13 +1,69 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
+using Newtonsoft.Json;
 
 namespace MasterDetailApp.Data
 {
+
+    public class LessonPage
+    {
+        public string name { get; set; }
+    }
+
+    // object we are going to parse?
+    public class LessonObject 
+    {
+        public int id { get; set; }
+        public string title { get; set; }
+        public List<LessonPage> pages { get; set; }
+    }
+
     public class ItemsDataSource
     {
+        
+        async public void fetchPages()
+        {
+            using (Windows.Web.Http.HttpClient wc = new Windows.Web.Http.HttpClient())
+            {
+                var headers = wc.DefaultRequestHeaders;
+                Uri requestUri = new Uri("https://sessions.io/api/3EFGTLHza");
+
+                //Send the GET request asynchronously and retrieve the response as a string.
+                Windows.Web.Http.HttpResponseMessage httpResponse = new Windows.Web.Http.HttpResponseMessage();
+                string httpResponseBody = "";
+
+                try
+                {
+                    //Send the GET request
+                    httpResponse = await wc.GetAsync(requestUri);
+                    httpResponse.EnsureSuccessStatusCode();
+                    httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+
+                    //parse JSON from the server
+                    var result = JsonConvert.DeserializeObject<LessonObject>(httpResponseBody);
+                    Debug.WriteLine(httpResponseBody);
+
+                    // then what can we do here?
+
+
+                }
+                catch (Exception ex)
+                {
+                    httpResponseBody = "Error: " + ex.HResult.ToString("X") + " Message: " + ex.Message;
+                }
+
+            }
+
+        }
+
+        public ItemsDataSource()
+        {
+
+            fetchPages();
+
+        }
+
         private static List<Item> _items = new List<Item>()
         {
             new Item()
